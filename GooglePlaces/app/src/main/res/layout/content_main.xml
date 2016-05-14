@@ -16,8 +16,8 @@
         android:id="@+id/places_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:src="@drawable/place_icon"
+        android:layout_centerHorizontal="true"
         android:paddingBottom="40dp"/>
 
     <TextView

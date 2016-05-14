@@ -171,6 +171,26 @@ public abstract class RestfulResponse {
     }
 
     /**
+     * Parse the long from json object
+     *
+     * @param jsonObj
+     *         the JSON object retrieved from service
+     * @param key
+     *         the key to parse
+     * @return the long value
+     */
+    protected long getLong(JSONObject jsonObj, String key) {
+        long retVal = 0;
+        try {
+            retVal = jsonObj.getLong(key);
+        } catch (JSONException exception) {
+            Log.e(RestfulResponse.class.getName(), exception.getMessage());
+
+        }
+        return retVal;
+    }
+
+    /**
      * Parse the boolean from json object
      *
      * @param jsonObj

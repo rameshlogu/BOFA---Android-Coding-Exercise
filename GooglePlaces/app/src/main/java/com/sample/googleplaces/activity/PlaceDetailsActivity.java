@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -15,15 +18,23 @@ import com.sample.googleplaces.R;
 import com.sample.googleplaces.data.loader.PlaceDetailsLoader;
 import com.sample.googleplaces.data.model.PlaceDetails;
 import com.sample.googleplaces.util.Constants;
+import com.sample.googleplaces.util.URLStore;
+
+import java.util.Locale;
 
 /**
+ * This is Main Activity which will present the Google Place details. Here, place details will be
+ * fetched and displayed.
+ * <p/>
  * Created by rameshloganathan on 14/05/16.
  */
 public class PlaceDetailsActivity extends AppCompatActivity implements LoaderManager
-        .LoaderCallbacks<PlaceDetails>{
+        .LoaderCallbacks<PlaceDetails>, View.OnClickListener {
 
     private static final int LOADER_ID = 1;
     private Dialog mLoadingDialog;
+    private PlaceDetails mPlaceDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +45,8 @@ public class PlaceDetailsActivity extends AppCompatActivity implements LoaderMan
         initialize();
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            getLoaderManager().initLoader(LOADER_ID,bundle,this);
+        if (bundle != null) {
+            getLoaderManager().initLoader(LOADER_ID, bundle, this);
         }
     }
 
@@ -48,6 +59,17 @@ public class PlaceDetailsActivity extends AppCompatActivity implements LoaderMan
                 R.style.Dialog_Load);
         mLoadingDialog.setContentView(R.layout.progress_spinner);
         mLoadingDialog.setCanceledOnTouchOutside(false);
+
+        findViewById(R.id.open_map_btn).setOnClickListener(this);
+    }
+
+    /**
+     * Place the address in Google Maps application
+     */
+    private void openMaps() {
+        String uri = URLStore.URL_GOOGLE_MAP+mPlaceDetails.getFormattedAddress();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        startActivity(intent);
     }
 
 
@@ -63,7 +85,7 @@ public class PlaceDetailsActivity extends AppCompatActivity implements LoaderMan
     @Override
     public Loader<PlaceDetails> onCreateLoader(int id, Bundle args) {
         mLoadingDialog.show();
-        return new PlaceDetailsLoader(this,args.getString(Constants.KEY_ID));
+        return new PlaceDetailsLoader(this, args.getString(Constants.KEY_ID));
     }
 
     /**
@@ -111,9 +133,11 @@ public class PlaceDetailsActivity extends AppCompatActivity implements LoaderMan
     public void onLoadFinished(Loader<PlaceDetails> loader, PlaceDetails data) {
         mLoadingDialog.dismiss();
         TextView address = (TextView) findViewById(R.id.place_address);
-        if(data != null){
-            if(data.isSuccess()){
-                address.setText(data.getFormattedAddress());
+        if (data != null) {
+            if (data.isSuccess()) {
+                mPlaceDetails = data;
+                address.setText(mPlaceDetails.getFormattedAddress());
+                findViewById(R.id.open_map_btn).setVisibility(View.VISIBLE);
             } else {
                 address.setText(data.getError().getMessage());
             }
@@ -131,5 +155,16 @@ public class PlaceDetailsActivity extends AppCompatActivity implements LoaderMan
     @Override
     public void onLoaderReset(Loader<PlaceDetails> loader) {
 
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v
+     *         The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        openMaps();
     }
 }
