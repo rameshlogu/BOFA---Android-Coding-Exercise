@@ -16,8 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/place_icon"
-        android:paddingBottom="40dp"/>
+        android:src="@drawable/detail_icon"/>
 
     <TextView
         android:id="@+id/place_address"
@@ -26,5 +25,21 @@
         android:layout_below="@id/place_icon"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
-        android:textSize="@dimen/large"/>
+        android:textSize="@dimen/large"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/open_map_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/large"
+        android:padding="8dp"
+        android:text="@string/open_maps"
+        android:layout_below="@id/place_address"
+        android:visibility="gone"/>
 </RelativeLayout>

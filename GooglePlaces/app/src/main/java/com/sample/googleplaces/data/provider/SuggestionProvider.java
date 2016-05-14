@@ -9,6 +9,7 @@ import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.sample.googleplaces.data.model.PlaceSuggestions;
@@ -22,9 +23,14 @@ import java.net.HttpURLConnection;
 import java.util.Hashtable;
 
 /**
+ * This class will act as a Content Provider for searchview suggestions. The 'query(..)' will be
+ * called for each and every keystroke from SearchView widget.
+ *
  * Created by rameshloganathan on 13/05/16.
  */
 public class SuggestionProvider extends ContentProvider {
+
+    private String mSearchQuery;
 
     /**
      * Implement this to initialize your content provider on startup.
@@ -120,17 +126,34 @@ public class SuggestionProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        Log.d(SuggestionProvider.class.getName(), "Uri ::::::: " + uri.toString());
+        mSearchQuery = uri.getLastPathSegment();
+
+        //Introduce a delay to avoid the frequent API hits
+        if(!TextUtils.isEmpty(mSearchQuery)){
+            try {
+                Thread.sleep(Constants.SUGGESTION_HIT_DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return getSuggestionsFromService();
+    }
+
+    /**
+     * Get suggestion from google service
+     * @return the cursor with suggestions
+     */
+    private Cursor getSuggestionsFromService(){
         MatrixCursor cursor = new MatrixCursor(new String[]{"_id", SearchManager
                 .SUGGEST_COLUMN_TEXT_1,
                 SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA});
-        //Get suggestions and add it to cursor
-        if (!SearchManager.SUGGEST_URI_PATH_QUERY.equalsIgnoreCase(uri.getLastPathSegment())) {
+        if(!SearchManager.SUGGEST_URI_PATH_QUERY.equalsIgnoreCase(mSearchQuery)){
+            Log.d(SuggestionProvider.class.getName(), "Requesting Suggestions for ::::::: " + mSearchQuery);
             //Connect Service
             ServiceRequest request = new ServiceRequest();
             request.setUrl(URLStore.URL_GOOGLE_PLACES_AUTOCOMPLETE);
             request.setId(Constants.SUGGESTION_SERVICE_ID);
-            request.setParameters(getParameters(uri.getLastPathSegment()));
+            request.setParameters(getParameters(mSearchQuery));
             ServiceResponse response = ServiceManager.getInstance()
                     .connectServiceAndGetResponse(request);
 
@@ -260,8 +283,6 @@ public class SuggestionProvider extends ContentProvider {
         // get request params
         Hashtable<String, String> parameters = new Hashtable<String, String>();
         parameters.put(Constants.PARAM_API_KEY, Constants.PARAM_API_VALUE);
-        parameters.put(Constants.PARAM_SENSOR_KEY, String.valueOf(false));
-        parameters.put(Constants.PARAM_COMPONENTS_KEY, Constants.PARAM_COMPONENTS_VALUE);
         parameters.put(Constants.PARAM_INPUT_KEY, input);
         return parameters;
     }

@@ -8,7 +8,6 @@ package com.sample.googleplaces.util;
 public class Constants {
 
     //Service
-    public static final int TIME_OUT = 60 * 1000;
     public static final int STATUS_CODE_EXCEPTION = 1000;
     public static final int STATUS_TIME_OUT_EXCEPTION = 1100;
     public static final String REQUEST_GET = "GET";
@@ -34,6 +33,10 @@ public class Constants {
     public static final String KEY_FORMATTED_ADDRESS = "formatted_address";
     public static final String KEY_PHONE = "formatted_phone_number";
     public static final String KEY_ICON = "icon";
+    public static final String KEY_GEOMETRY = "geometry";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_LAT = "lat";
+    public static final String KEY_LNG = "lng";
     public static final String DETAILS_SERVICE_ERROR = "Unable to get details";
 
     //Generic Errors
@@ -42,11 +45,9 @@ public class Constants {
     //Suggestion Provider
     public static final String SUGGESTION_SERVICE_ID = "suggestion_service_id";
     public static final String PARAM_API_KEY = "key";
-    public static final String PARAM_SENSOR_KEY = "sensor";
-    public static final String PARAM_COMPONENTS_KEY = "components";
     public static final String PARAM_INPUT_KEY = "input";
     public static final String PARAM_API_VALUE = "AIzaSyBCwIqFJbN-_2GFnbuGVMpHblTZPmXMeoo";
-    public static final String PARAM_COMPONENTS_VALUE = "country:us";
+    public static final int SUGGESTION_HIT_DELAY = 1000;
 
     //Detail Loader
     public static final String DETAILS_SERVICE_ID = "details_service_id";

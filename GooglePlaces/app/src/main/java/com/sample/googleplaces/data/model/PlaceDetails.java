@@ -17,6 +17,8 @@ public class PlaceDetails extends RestfulResponse {
     private String formattedAddress;
     private String iconUrl;
     private String phone;
+    private long lat;
+    private long lng;
 
     /**
      * Constructor
@@ -41,6 +43,10 @@ public class PlaceDetails extends RestfulResponse {
         setFormattedAddress(getString(result, Constants.KEY_FORMATTED_ADDRESS));
         setPhone(getString(result, Constants.KEY_PHONE));
         setIconUrl(getString(result, Constants.KEY_ICON));
+        JSONObject geometry = getJSONObject(result,Constants.KEY_GEOMETRY);
+        JSONObject location = getJSONObject(geometry,Constants.KEY_LOCATION);
+        setLat(getLong(location,Constants.KEY_LAT));
+        setLng(getLong(location,Constants.KEY_LNG));
     }
 
     /**
@@ -85,5 +91,21 @@ public class PlaceDetails extends RestfulResponse {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public long getLat() {
+        return lat;
+    }
+
+    public void setLat(long lat) {
+        this.lat = lat;
+    }
+
+    public long getLng() {
+        return lng;
+    }
+
+    public void setLng(long lng) {
+        this.lng = lng;
     }
 }
