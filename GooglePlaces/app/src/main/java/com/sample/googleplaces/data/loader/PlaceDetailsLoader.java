@@ -2,13 +2,11 @@ package com.sample.googleplaces.data.loader;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import com.sample.googleplaces.data.model.PlaceDetails;
 import com.sample.googleplaces.data.network.ServiceManager;
 import com.sample.googleplaces.data.network.ServiceRequest;
 import com.sample.googleplaces.data.network.ServiceResponse;
-import com.sample.googleplaces.data.provider.SuggestionProvider;
 import com.sample.googleplaces.util.Constants;
 import com.sample.googleplaces.util.URLStore;
 
@@ -55,7 +53,6 @@ public class PlaceDetailsLoader extends AsyncTaskLoader<PlaceDetails> {
         //Parse response
         PlaceDetails details = null;
         if (response.getStatusCode() == HttpURLConnection.HTTP_OK) {
-            Log.d(SuggestionProvider.class.getName(), response.getStringResponse());
             details = new PlaceDetails(response.getStringResponse());
         }
 
