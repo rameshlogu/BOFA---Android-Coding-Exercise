@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * <p/>
  * Created by rameshloganathan on 14/05/16.
  */
-public class Suggestions extends RestfulResponse {
+public class PlaceSuggestions extends RestfulResponse {
 
     private ArrayList<Suggestion> suggestions;
 
@@ -34,7 +34,7 @@ public class Suggestions extends RestfulResponse {
      * @param response
      *         the JSON response to parse
      */
-    public Suggestions(String response) {
+    public PlaceSuggestions(String response) {
         super(response);
     }
 

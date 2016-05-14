@@ -11,18 +11,14 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.sample.googleplaces.data.model.Suggestions;
+import com.sample.googleplaces.data.model.PlaceSuggestions;
 import com.sample.googleplaces.data.network.ServiceManager;
 import com.sample.googleplaces.data.network.ServiceRequest;
 import com.sample.googleplaces.data.network.ServiceResponse;
 import com.sample.googleplaces.util.Constants;
 import com.sample.googleplaces.util.URLStore;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -140,11 +136,10 @@ public class SuggestionProvider extends ContentProvider {
 
             //Parse response
             if (response.getStatusCode() == HttpURLConnection.HTTP_OK) {
-                Log.d(SuggestionProvider.class.getName(), response.getStringResponse());
-                Suggestions suggestions = new Suggestions(response.getStringResponse());
+                PlaceSuggestions suggestions = new PlaceSuggestions(response.getStringResponse());
                 if (suggestions.isSuccess()) {
                     int i = 0;
-                    for (Suggestions.Suggestion suggestion : suggestions.getSuggestions()) {
+                    for (PlaceSuggestions.Suggestion suggestion : suggestions.getSuggestions()) {
                         cursor.addRow(new String[]{Integer.toString(++i),
                                 suggestion.getDescription(),
                                 suggestion.getId()});

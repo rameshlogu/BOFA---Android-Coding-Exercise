@@ -23,11 +23,18 @@ public class Constants {
     public static final String STATUS_SUCCESS = "ok";
     public static final String ERROR_MESSAGE = "error_message";
 
-    //Suggestions Model
+    //PlaceSuggestions Model
     public static final String KEY_PREDICTIONS = "predictions";
     public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_ID = "id";
+    public static final String KEY_ID = "place_id";
     public static final String SUGGESTION_SERVICE_ERROR = "Unable to get suggestions";
+
+    //PlaceDetails Model
+    public static final String KEY_RESULT = "result";
+    public static final String KEY_FORMATTED_ADDRESS = "formatted_address";
+    public static final String KEY_PHONE = "formatted_phone_number";
+    public static final String KEY_ICON = "icon";
+    public static final String DETAILS_SERVICE_ERROR = "Unable to get details";
 
     //Generic Errors
     public static final String GENERIC_SERVICE_ERROR = "Unable to complete the request";
@@ -40,4 +47,8 @@ public class Constants {
     public static final String PARAM_INPUT_KEY = "input";
     public static final String PARAM_API_VALUE = "AIzaSyBCwIqFJbN-_2GFnbuGVMpHblTZPmXMeoo";
     public static final String PARAM_COMPONENTS_VALUE = "country:us";
+
+    //Detail Loader
+    public static final String DETAILS_SERVICE_ID = "details_service_id";
+    public static final String PARAM_PLACEID_KEY = "placeid";
 }

@@ -24,6 +24,9 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
+        <activity
+            android:name=".activity.PlaceDetailsActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <provider
             android:name=".data.provider.SuggestionProvider"
             android:authorities="com.sample.googleplaces.data.provider.SuggestionProvider"

@@ -2,16 +2,19 @@ package com.sample.googleplaces.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.sample.googleplaces.R;
+import com.sample.googleplaces.util.Constants;
 
 /**
  * This is Main Activity which will present the landing page of application. {@link SearchView}
@@ -50,9 +53,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Close the search widget programatically when required.
      */
-    private void closeSearchWidget(){
+    private void closeSearchWidget() {
         mSearchView.onActionViewCollapsed();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    /**
+     * Handle the new intent. New intent will be arrived when user selects a place from suggestions.
+     *
+     * @param intent
+     *         the new intent with place id
+     */
+    private void handleIntent(Intent intent) {
+        if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+            Log.d(MainActivity.class.getName(), intent.getStringExtra(SearchManager
+                    .EXTRA_DATA_KEY));
+            closeSearchWidget();
+
+            //Start details Activity
+            Intent detailsIntent = new Intent(this,PlaceDetailsActivity.class);
+            detailsIntent.putExtra(Constants.KEY_ID,intent.getStringExtra(SearchManager
+                    .EXTRA_DATA_KEY));
+            startActivity(detailsIntent);
+
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleIntent(intent);
     }
 
     @Override
@@ -110,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         //Handle back press appropriately
-        if(!mSearchView.isIconified()){
+        if (!mSearchView.isIconified()) {
             closeSearchWidget();
         } else {
             super.onBackPressed();
