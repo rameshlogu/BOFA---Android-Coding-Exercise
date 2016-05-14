@@ -12,4 +12,6 @@ public class URLStore {
     //Googele Places details
     public static final String URL_GOOGLE_PLACES_DETAIL = "https://maps.googleapis" +
             ".com/maps/api/place/details/json";
+    //Googele Maps
+    public static final String URL_GOOGLE_MAP = "http://maps.google.co.in/maps?q=";
 }

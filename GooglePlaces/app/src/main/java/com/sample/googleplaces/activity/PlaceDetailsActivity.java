@@ -18,6 +18,9 @@ import com.sample.googleplaces.R;
 import com.sample.googleplaces.data.loader.PlaceDetailsLoader;
 import com.sample.googleplaces.data.model.PlaceDetails;
 import com.sample.googleplaces.util.Constants;
+import com.sample.googleplaces.util.URLStore;
+
+import java.util.Locale;
 
 /**
  * This is Main Activity which will present the Google Place details. Here, place details will be
@@ -61,16 +64,11 @@ public class PlaceDetailsActivity extends AppCompatActivity implements LoaderMan
     }
 
     /**
-     * Place lat and long in Google Maps application
+     * Place the address in Google Maps application
      */
     private void openMaps() {
-        String uriBegin = "geo:" + mPlaceDetails.getLat() + "," + mPlaceDetails.getLng();
-        String query = mPlaceDetails.getLat() + "," + mPlaceDetails.getLng() + "(" +
-                mPlaceDetails.getFormattedAddress() + ")";
-        String encodedQuery = Uri.encode(query);
-        String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
-        Uri uri = Uri.parse(uriString);
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+        String uri = URLStore.URL_GOOGLE_MAP+mPlaceDetails.getFormattedAddress();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(intent);
     }
 
